@@ -1,10 +1,11 @@
 require("dotenv").config();
-
+const cors = require("cors");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
+app.use(cors({ origin: "*" }));
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected To DB"));

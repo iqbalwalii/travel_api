@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Tour = require("../models/tour");
+
 let tour;
 
 async function getTour(req, res, next) {
@@ -48,12 +49,12 @@ router.post("/", async (req, res) => {
 
 //updating
 router.patch("/:id", getTour, async (req, res) => {
-  const values = Object.keys(req.body)
+  const values = Object.keys(req.body);
   if (req.body.length !== null && Object.keys(req.body).length !== 0) {
-    values.map((value)=> res.tour[value]= req.body[value])
-    res.tour.modified_at = Date.now()
+    values.map((value) => (res.tour[value] = req.body[value]));
+    res.tour.modified_at = Date.now();
   }
-  console.log(values)
+  console.log(values);
   try {
     const updatedTour = await res.tour.save();
     res.status(200).json(updatedTour);
@@ -71,7 +72,5 @@ router.delete("/:id", getTour, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-
 
 module.exports = router;

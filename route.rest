@@ -1,0 +1,24 @@
+GET http://localhost:5000/tours
+
+###
+POST http://localhost:5000/tours
+Content-Type: application/json
+
+{
+    "title" : "Rumana Bhat",
+    "altitude":"23",
+    "duration":"2 days",
+    "difficulty":"5",
+    "distance":"23km",
+    "best_time":"July",
+    "price":"1222",
+    "description":"dfhdyfdhkj fdjhf dhf dh fhdf djkhfjhdf hdfhdjhfjkdhf djkf hdkjh fjkdhf jkdh"
+}
+###
+
+PATCH http://localhost:5000/tours/63e4b8021674c16e78b4672e
+Content-Type: application/json
+
+{
+    "title": "John LO"
+}

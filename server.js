@@ -11,6 +11,8 @@ db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected To DB"));
 app.use(express.json());
 const toursRouter = require("./routes/tours");
+const usersRouter = require("./routes/users");
 app.use("/tours", toursRouter);
+app.use("/users", usersRouter);
 
 app.listen(process.env.PORT, () => console.log("listening on port 5000"));

@@ -37,7 +37,6 @@ router.post("/", async (req, res) => {
   const tour = new Tour({
     ...req.body,
   });
-  console.log(tour);
   try {
     const newTour = await tour.save();
     res.status(201).json(newTour);

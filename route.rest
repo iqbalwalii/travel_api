@@ -17,22 +17,17 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:5000/tours/63e4b8021674c16e78b4672e
+PATCH http://localhost:5000/tours/63f770682b5174c2d3c51117
 Content-Type: application/json
 
 {
-    "title": "John LO"
+    "title": "Bedde"
 }
 
 # /user
 
 ###
-GET http://localhost:5000/users/username
-Content-Type: application/json
-
-{
-    "username": "ibili"
-}
+GET http://localhost:5000/users/check/2
 
 ###
 
@@ -52,16 +47,7 @@ Content-Type: application/json
 }
 ###
 
-GET http://localhost:5000/users/name
-Content-Type: application/json
-
-{
-    "username":"iqbalwali"  
-}
-
-###
-
-GET http://localhost:5000/users/login
+POST http://localhost:5000/users/login
 Content-Type: application/json
 
 {

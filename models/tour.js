@@ -6,23 +6,23 @@ const tourSchema = new mongoose.Schema({
   },
   altitude: {
     type: String,
-    required: true,
+    required: false,
   },
   duration: {
     type: String,
-    required: true,
+    required: false,
   },
   difficulty: {
     type: String,
-    required: true,
+    required: false,
   },
   distance: {
     type: String,
-    required: true,
+    required: false,
   },
   best_time: {
     type: String,
-    required: true,
+    required: false,
   },
   price: {
     type: String,

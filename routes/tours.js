@@ -4,24 +4,77 @@ const Tour = require("../models/tour");
 
 let tour;
 
-async function getTour(req, res, next) {
-  try {
-    tour = await Tour.findById(req.params.id);
-    if (tour == null) {
-      return res.status(404).json({ message: "Tour Not Found" });
-    }
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-  res.tour = tour;
-  next();
-}
-//getting one
-router.get("/:id", getTour, (req, res) => {
-  res.status(200).json(tour);
-});
+/**
+ *  @swagger
+ *  components:
+ *   schemas:
+ *     Tour:
+ *        type: object
+ *        required:
+ *         - title
+ *         - description
+ *         - price
+ *        properties:
+ *          id:
+ *            type: string
+ *            description: auto generated id
+ *          title:
+ *            type: string
+ *            description: the name of the tour
+ *          description:
+ *            type: string
+ *            description: the descrioption of the tour
+ *          price:
+ *            type: string
+ *            description: the price of the tour
+ *          altitude:
+ *            type: string
+ *            description: the altitude of the tour
+ *          best_time:
+ *            type: string
+ *            description: the best time of the tour
+ *          distance:
+ *            type: string
+ *            description: the distance of the tour
+ *          difficulty:
+ *            type: string
+ *            description: the difficulty of the tour
+ *
+ *        example:
+ *            id: d5s8879364
+ *            title: pahalgam
+ *            description: a beautiful meadow
+ *            price: 299
+ *            best_time: july
+ *            distance: 76kms
+ *            diffculty: 5
+ *            altitude: 1929m
+ */
 
-//getting all
+/**
+ * @swagger
+ * tags:
+ *  name: Tours
+ *  description: The Tours managing API
+ */
+
+/**
+ * @swagger
+ * /tours:
+ *  get:
+ *    summary: returns list of all tours
+ *    tags: [Tours]
+ *    responses:
+ *      200:
+ *        description: the list of tour
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/Tour'
+ */
+
 router.get("/", async (req, res) => {
   try {
     const tours = await Tour.find();
@@ -32,6 +85,59 @@ router.get("/", async (req, res) => {
   res.send("hii");
 });
 
+//getting one
+/**
+ * @swagger
+ * /tours/{id}:
+ *  get:
+ *    summary: returns list of specific tour
+ *    tags: [Tours]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: the book id
+ *    responses:
+ *      200:
+ *        description: the specific tour
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#components/schemas/Tour'
+ *      404:
+ *        description : The Book was not Found
+ */
+
+router.get("/:id", getTour, (req, res) => {
+  res.status(200).json(tour);
+});
+
+/**
+ * @swagger
+ * /tours:
+ *  post:
+ *    summary: Creates a Tour
+ *    tags: [Tours]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#components/schemas/Tour'
+ *    responses:
+ *      200:
+ *        description: Tour was successfully Created
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/Tour'
+ *      500:
+ *        description : Server Error
+ */
 //creating one
 router.post("/", async (req, res) => {
   const tour = new Tour({
@@ -45,6 +151,40 @@ router.post("/", async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
+
+/**
+ * @swagger
+ * /tours/{id}:
+ *  patch:
+ *    summary: updates a specific  tour
+ *    tags: [Tours]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: the book id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#components/schemas/Tour'
+ *    responses:
+ *      200:
+ *        description: the updated tour
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/Tour'
+ *      404:
+ *        description : Tour Not Found
+ *      500:
+ *        description : Server Error
+ */
 
 //updating
 router.patch("/:id", getTour, async (req, res) => {
@@ -62,6 +202,29 @@ router.patch("/:id", getTour, async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /tours/{id}:
+ *  delete:
+ *    summary: delete a specific  tour
+ *    tags: [Tours]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: the book id
+ *    responses:
+ *      200:
+ *        description: the deleted tour
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/Tour'
+ */
 //deleting one
 router.delete("/:id", getTour, async (req, res) => {
   try {
@@ -72,4 +235,16 @@ router.delete("/:id", getTour, async (req, res) => {
   }
 });
 
+async function getTour(req, res, next) {
+  try {
+    tour = await Tour.findById(req.params.id);
+    if (tour == null) {
+      return res.status(404).json({ message: "Tour Not Found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+  res.tour = tour;
+  next();
+}
 module.exports = router;

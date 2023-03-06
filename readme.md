@@ -1,6 +1,7 @@
 # Travel 
 
 backend server for a travel website where you can view tours and create bookings and read blogs posted by people
+you can view the routes for this app @https://travel-zcxl.onrender./api/docs
 
 ## Requirements
 

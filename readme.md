@@ -1,8 +1,6 @@
-# Project Title
+# Travel 
 
-TRAVEL API
-
-backend app for a travel website where you can view tours and create bookings and read blogs posted by people
+backend server for a travel website where you can view tours and create bookings and read blogs posted by people
 
 ## Requirements
 

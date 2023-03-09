@@ -23,6 +23,7 @@ const uploadImg = multer({ storage: storage });
  *         - title
  *         - description
  *         - price
+ *         - image
  *        properties:
  *          id:
  *            type: string
@@ -61,6 +62,7 @@ const uploadImg = multer({ storage: storage });
  *            distance: 76kms
  *            diffculty: 5
  *            altitude: 1929m
+ *            image: 'https://travel-zcxl.onrender.com/abc.png'
  */
 
 /**

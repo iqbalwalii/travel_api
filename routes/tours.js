@@ -153,8 +153,8 @@ router.get("/:id", getTour, (req, res) => {
 
 //creating one
 router.post("/", uploadImg.single("image"), async (req, res) => {
-  const url = req.protocol + "://" + "https://travel-zcxl.onrender.com";
-  const actualUrl = url + "/uploads/" + req.file.filename;
+  const baseUrl = "https://travel-zcxl.onrender.com";
+  const actualUrl = baseUrl + "/uploads/" + req.file.filename;
   const tour = new Tour({
     ...req.body,
     image: actualUrl,

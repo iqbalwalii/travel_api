@@ -15,7 +15,7 @@ const options = {
     },
     servers: [
       { url: `http://localhost:${process.env.PORT}` },
-      { url: "https://travel-api-rl2h.onrender.com" },
+      { url: "https://travel-zcxl.onrender.com" },
     ],
   },
   apis: ["./routes/*.js"],
@@ -35,6 +35,8 @@ app.use(express.json());
 
 const toursRouter = require("./routes/tours");
 const usersRouter = require("./routes/users");
+app.use(express.static("public"));
+app.use("/uploads", express.static("uploads"));
 app.use("/tours", toursRouter);
 app.use("/users", usersRouter);
 

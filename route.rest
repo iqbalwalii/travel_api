@@ -1,0 +1,56 @@
+GET http://localhost:5000/tours
+
+###
+POST http://localhost:5000/tours
+Content-Type: application/json
+
+{
+    "title" : "aatma raam",
+    "altitude":"23",
+    "duration":"2 days",
+    "difficulty":"5",
+    "distance":"23km",
+    "best_time":"July",
+    "price":"1222",
+    "description":"dfhdyfdhkj fdjhf dhf dh fhdf djkhfjhdf hdfhdjhfjkdhf djkf hdkjh fjkdhf jkdh"
+}
+
+###
+
+PATCH http://localhost:5000/tours/63f770682b5174c2d3c51117
+Content-Type: application/json
+
+{
+    "title": "Bedde"
+}
+
+# /user
+
+###
+GET http://localhost:5000/users/check/2
+
+###
+
+POST http://localhost:5000/users/register
+Content-Type: application/json
+ 
+{
+    "first_name":"iqbal",
+    "last_name":"wali",
+    "email":"iqbalwali@gmail.com",
+    "phone":"9906999999",
+    "password":"abc123",
+    "confirmPassword":"abc123",
+    "username":"janab"
+    
+
+}
+###
+
+POST http://localhost:5000/users/login
+Content-Type: application/json
+
+{
+    "username":"batman",
+    "password": "abc123" 
+}

@@ -1,8 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const Tour = require("../models/tour");
+const multer = require("multer");
 
-let tour;
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname.split(" ").join(""));
+  },
+});
+const uploadImg = multer({ storage: storage });
 
 /**
  *  @swagger
@@ -18,6 +27,9 @@ let tour;
  *          id:
  *            type: string
  *            description: auto generated id
+ *          image:
+ *            type: string
+ *            description: the name of the tour
  *          title:
  *            type: string
  *            description: the name of the tour
@@ -138,10 +150,14 @@ router.get("/:id", getTour, (req, res) => {
  *      500:
  *        description : Server Error
  */
+
 //creating one
-router.post("/", async (req, res) => {
+router.post("/", uploadImg.single("image"), async (req, res) => {
+  const url = req.protocol + "://" + "https://travel-zcxl.onrender.com";
+  const actualUrl = url + "/uploads/" + req.file.filename;
   const tour = new Tour({
     ...req.body,
+    image: actualUrl,
   });
   try {
     const newTour = await tour.save();
@@ -151,7 +167,9 @@ router.post("/", async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-
+router.post("/img", uploadImg.single("image"), async (req, res) => {
+  console.log(req.file);
+});
 /**
  * @swagger
  * /tours/{id}:

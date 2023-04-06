@@ -3,6 +3,17 @@ const router = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname.split(" ").join(""));
+  },
+});
+const uploadImg = multer({ storage: storage });
 
 /**
  *  @swagger
@@ -54,6 +65,7 @@ const jwt = require("jsonwebtoken");
  *            password: abc123
  *            confirmPassword: abc123
  */
+
 /**
  * @swagger
  * tags:
@@ -156,7 +168,7 @@ router.get("/check/:username", async (req, res) => {
 router.post("/register", async (req, res) => {
   try {
     User.exists({ username: req.body.username }, async (err, data) => {
-      if (err) console.log(err, "na");
+      if (err) console.log(err, "errors occured");
       else {
         if (data) {
           res.status(501).json({ message: `Username already exists` });
@@ -168,7 +180,6 @@ router.post("/register", async (req, res) => {
               password: hashedPassword,
             });
             const newUser = await user.save();
-            console.log(newUser.username, newUser._id);
             const token = jwt.sign(
               { username: newUser.username, id: newUser._id },
               process.env.JWT_SECRET
@@ -207,35 +218,95 @@ router.post("/register", async (req, res) => {
  *        description : Username or Password Incorrect
  */
 router.post("/login", async (req, res) => {
+  console.log(req.body);
   try {
-    const user = User.find({ username: req.body.username }, (err, data) => {
-      if (err) console.log(err);
-      else {
+    User.find({ username: req.body.username }, (err, data) => {
+      if (err) {
+        res.status(500).json({ message: err });
+      } else {
         const requestedUser = data[0];
-        bcrypt.compare(
-          req.body.password,
-          requestedUser.password,
-          (err, isMatch) => {
-            if (err) {
-              return err;
+        if (requestedUser === undefined) {
+          res.status(404).json({ message: "username not found" });
+          console.log("username not found");
+        } else {
+          bcrypt.compare(
+            req.body.password,
+            requestedUser.password,
+            (err, isMatch) => {
+              if (err) {
+                res.status(500).json({ message: err });
+              }
+              if (isMatch) {
+                const token = jwt.sign(
+                  {
+                    username: requestedUser.username,
+                    id: requestedUser._id,
+                  },
+                  process.env.JWT_SECRET
+                );
+                res.status(200).json({ user: requestedUser, token: token });
+              } else {
+                res
+                  .status(404)
+                  .json({ message: "password or username doesn't match" });
+              }
             }
-
-            if (isMatch === true) {
-              const token = jwt.sign(
-                { username: requestedUser.username, id: requestedUser._id },
-                process.env.JWT_SECRET
-              );
-              res.status(200).json({ user: requestedUser, token: token });
-            } else {
-              res
-                .status(401)
-                .json({ message: "password or username is incorrect" });
-            }
-          }
-        );
+          );
+        }
       }
     });
-  } catch (err) {}
+  } catch (err) {
+    res.status(500).json({ message: "server error" });
+  }
 });
 
+// router.post("/login", async (req, res) => {
+//   try {
+//     User.find({ username: req.body.username }, (err, data) => {
+//       if (err) res.status(404).json({ message: "username doesn't exist" });
+//       else {
+//         const requestedUser = data[0];
+//         bcrypt.compare(
+//           req.body.password,
+//           requestedUser.password,
+//           (err, isMatch) => {
+//             if (err) {
+//               console.log("wai");
+//             }
+//             if (isMatch === true) {
+//               const token = jwt.sign(
+//                 { username: requestedUser.username, id: requestedUser._id },
+//                 process.env.JWT_SECRET
+//               );
+//               res.status(200).json({ user: requestedUser, token: token });
+//             } else {
+//               res
+//                 .status(401)
+//                 .json({ message: "password or username is incorrect" });
+//             }
+//           }
+//         );
+//       }
+//     });
+//   } catch (err) {}
+// });
+router.patch("/edit/:id", uploadImg.single("profile"), async (req, res) => {
+  const requestedUser = await User.findById(req.params.id);
+  const values = Object.keys(req.body);
+  if (req.body.length !== null && Object.keys(req.body).length !== 0) {
+    values.map((value) => (requestedUser[value] = req.body[value]));
+    requestedUser.modified_at = Date.now();
+  } else if (req.file) {
+    const url = process.env.SERVER + "/uploads/" + req.file.filename;
+    requestedUser.profile = url;
+    requestedUser.modified_at = Date.now();
+  }
+  try {
+    const updatedUser = await requestedUser.save();
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+  console.log(requestedUser);
+});
 module.exports = router;

@@ -8,6 +8,22 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  profile: {
+    type: String,
+    default: `${process.env.SERVER}/uploads/avatar.png`,
+  },
+  isClubMember: {
+    type: Boolean,
+    default: false,
+  },
+  clubName: {
+    type: String,
+    required: false,
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
   last_name: {
     type: String,
     required: true,

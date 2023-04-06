@@ -96,7 +96,6 @@ router.get("/", async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-  res.send("hii");
 });
 
 //getting one
@@ -155,18 +154,17 @@ router.get("/:id", getTour, (req, res) => {
 
 //creating one
 router.post("/", uploadImg.single("image"), async (req, res) => {
-  const baseUrl = "https://travel-zcxl.onrender.com";
-  const actualUrl = baseUrl + "/uploads/" + req.file.filename;
+  const url = process.env.SERVER + "/uploads/" + req.file.filename;
   const tour = new Tour({
     ...req.body,
-    image: actualUrl,
+    image: url,
   });
   try {
     const newTour = await tour.save();
     res.status(201).json(newTour);
   } catch (err) {
     console.log(err);
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 router.post("/img", uploadImg.single("image"), async (req, res) => {

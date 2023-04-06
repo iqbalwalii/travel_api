@@ -1,4 +1,5 @@
-GET http://localhost:5000/tours
+GET http://localhost:5000/bookings
+
 
 ###
 POST http://localhost:5000/tours
@@ -13,6 +14,17 @@ Content-Type: application/json
     "best_time":"July",
     "price":"1222",
     "description":"dfhdyfdhkj fdjhf dhf dh fhdf djkhfjhdf hdfhdjhfjkdhf djkf hdkjh fjkdhf jkdh"
+}
+###
+
+PATCH  http://localhost:5000/bookings/641561620513e024bc03952b
+Content-Type: application/json
+
+{
+    "title" : "jinab",
+    "persons": [{"name":"iqbalwali", "age":"43"}, {"name":"almunium", "age":"43"}]
+
+  
 }
 
 ###
@@ -41,16 +53,15 @@ Content-Type: application/json
     "phone":"9906999999",
     "password":"abc123",
     "confirmPassword":"abc123",
-    "username":"janab"
+    "username":"iqbbb"
     
 
 }
 ###
 
-POST http://localhost:5000/users/login
+PATCH http://localhost:5000/users/edit/641b202bcf623836fae15e40
 Content-Type: application/json
 
 {
-    "username":"batman",
-    "password": "abc123" 
+    "phone": "8803090909"
 }

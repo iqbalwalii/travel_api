@@ -35,9 +35,13 @@ app.use(express.json());
 
 const toursRouter = require("./routes/tours");
 const usersRouter = require("./routes/users");
+const bookingsRouter = require("./routes/bookings");
+
 app.use(express.static("public"));
 app.use("/uploads", express.static("uploads"));
+
 app.use("/tours", toursRouter);
 app.use("/users", usersRouter);
+app.use("/bookings", bookingsRouter);
 
 app.listen(process.env.PORT, () => console.log("listening on port 5000"));

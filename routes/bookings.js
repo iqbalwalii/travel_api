@@ -9,11 +9,12 @@ async function getBooking(req, res, next) {
       return res.status(404).json({ message: "Booking Not Found" });
     }
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
   res.booking = booking;
   next();
 }
+
 /**
  *  @swagger
  *  components:

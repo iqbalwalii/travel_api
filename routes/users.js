@@ -218,7 +218,6 @@ router.post("/register", async (req, res) => {
  *        description : Username or Password Incorrect
  */
 router.post("/login", async (req, res) => {
-  console.log(req.body);
   try {
     User.find({ username: req.body.username }, (err, data) => {
       if (err) {
@@ -244,6 +243,7 @@ router.post("/login", async (req, res) => {
                   },
                   process.env.JWT_SECRET
                 );
+                console.log(requestedUser);
                 res.status(200).json({ user: requestedUser, token: token });
               } else {
                 res

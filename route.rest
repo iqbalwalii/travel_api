@@ -17,12 +17,20 @@ Content-Type: application/json
 }
 ###
 
-PATCH  http://localhost:5000/bookings/641561620513e024bc03952b
+POST  http://localhost:5000/bookings
 Content-Type: application/json
 
 {
-    "title" : "jinab",
-    "persons": [{"name":"iqbalwali", "age":"43"}, {"name":"almunium", "age":"43"}]
+    "name": "iqbalwali",
+    "email": "iuqbal@fj.com",
+    "phone": "+919888888888",
+    "alternate_phone": "+919888888888",
+    "address_1":"a",
+    "address_2":"a",
+    "city":"190002",
+    "pincode":"100999",
+    "payment_mode":"online",
+    "terms_and_conditons":"true"
 
   
 }

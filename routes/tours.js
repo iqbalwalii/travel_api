@@ -92,6 +92,7 @@ const uploadImg = multer({ storage: storage });
 router.get("/", async (req, res) => {
   try {
     const tours = await Tour.find();
+    console.log(tours);
     res.status(200).json(tours);
   } catch (err) {
     res.status(500).json({ message: err.message });

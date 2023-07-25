@@ -1,6 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const Booking = require("../models/booking");
+const nodemailer = require("nodemailer");
+
+let mailTransporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "travelly99@gmail.com",
+    pass: process.env.GMAIL,
+  },
+});
 
 async function getBooking(req, res, next) {
   try {
@@ -129,7 +138,20 @@ router.post("/", async (req, res) => {
     ...req.body,
   });
   try {
+    let mailDetails = {
+      from: "travelly99@gmail.com",
+      to: req.body.email,
+      subject: "BOOKING CREATED SUCCESSFULLY",
+      text: `Hello ${req.body.name} Your Booking has been confirmed successfuly `,
+    };
     const booking = await newBooking.save();
+    mailTransporter.sendMail(mailDetails, function (err, data) {
+      if (err) {
+        console.log("Error Occurs", err);
+      } else {
+        console.log("Email sent successfully", data);
+      }
+    });
     res.status(201).json(booking);
   } catch (err) {
     res.status(500).json({ message: err.message });
